@@ -1,0 +1,29 @@
+{
+  "name": "react-html-classes",
+  "version": "1.0.0",
+  "description": "HTML classes for React",
+  "main": "index.js",
+  "module": "index.es6.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/d8corp/react-html-classes.git"
+  },
+  "keywords": [
+    "react",
+    "html",
+    "classes",
+    "front-end",
+    "style",
+    "modules",
+    "css"
+  ],
+  "author": "Mikhail Lysikov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/d8corp/react-html-classes/issues"
+  },
+  "homepage": "https://github.com/d8corp/react-html-classes",
+  "dependencies": {
+    "html-classes": "^1.0.0"
+  }
+}
