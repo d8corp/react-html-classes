@@ -48,6 +48,7 @@
     "minimist": ">=0.2.1"
   },
   "dependencies": {
-    "html-classes": "^1.0.0"
+    "html-classes": "^1.0.0",
+    "lodash": ">=4.17.19"
   }
 }
