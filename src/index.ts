@@ -43,7 +43,7 @@ function style (styles: Style) {
 
   return target => {
     const {prototype} = target
-    const {render} = prototype
+    const render = prototype?.render
     if (render) {
       if (STYLES in prototype) {
         prototype[STYLES] = {__proto__: prototype[STYLES]}
