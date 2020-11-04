@@ -1,6 +1,6 @@
 {
   "name": "react-html-classes",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "HTML classes for React",
   "main": "index.js",
   "module": "index.es6.js",
