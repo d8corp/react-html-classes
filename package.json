@@ -45,10 +45,10 @@
     "rollup-plugin-typescript2": "^0.25.3",
     "ts-jest": "^25.2.0",
     "typescript": "^3.7.5",
-    "minimist": ">=0.2.1"
+    "minimist": ">=0.2.1",
+    "lodash": ">=4.17.19"
   },
   "dependencies": {
-    "html-classes": "^1.0.0",
-    "lodash": ">=4.17.19"
+    "html-classes": "^1.0.0"
   }
 }
