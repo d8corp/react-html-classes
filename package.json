@@ -46,7 +46,7 @@
     "ts-jest": "^25.2.0",
     "typescript": "^3.7.5",
     "minimist": ">=0.2.1",
-    "lodash": ">=4.17.19"
+    "lodash": ">=4.17.21"
   },
   "dependencies": {
     "html-classes": "^1.0.0"
