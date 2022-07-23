@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { getStyleGenerator, StyleProps } from '.'
+import style, { MultipleStyleProps, SingleStyleProps } from '.'
 import { render } from '@testing-library/react'
 
 function get (component): string {
@@ -9,11 +9,11 @@ function get (component): string {
 describe('classNames', () => {
   describe('examples', () => {
     test('example1', () => {
-      const getStyles = getStyleGenerator({
+      const getStyles = style({
         root: 'root-test',
       })
 
-      interface TestProps extends StyleProps<typeof getStyles> {
+      interface TestProps extends SingleStyleProps {
 
       }
 
@@ -29,13 +29,13 @@ describe('classNames', () => {
   })
   describe('empty', () => {
     test('class decorator', () => {
-      const getStyles = getStyleGenerator({
+      const getStyles = style({
         root: '',
         test1: '',
         test2: '',
       })
 
-      interface TestProps extends StyleProps<typeof getStyles> {}
+      interface TestProps extends MultipleStyleProps<ReturnType<typeof getStyles>> {}
 
       const Test: FC<TestProps> = ({className, classNames}) => {
         const styles = getStyles(className, classNames)

@@ -41,15 +41,15 @@ Import the file into
 `App.jsx`
 ```typescript jsx
 import { FC } from 'react'
-import { getStyleGenerator, StyleProps } from 'react-html-classes'
+import style, { MultipleStyleProps } from 'react-html-classes'
 
 // import our styles
 import styles from './App.module.scss'
 
 // create style generator
-export const getStyles = getStyleGenerator(styles)
+export const getStyles = style(styles)
 
-export interface AppProps extends StyleProps<typeof getStyles> {
+export interface AppProps extends MultipleStyleProps<ReturnType<typeof getStyles>> {
   // add your props here
 }
 

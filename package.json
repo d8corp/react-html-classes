@@ -1,6 +1,6 @@
 {
   "name": "react-html-classes",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "HTML classes for React",
   "main": "index.js",
   "module": "index.es6.js",
@@ -46,6 +46,6 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "html-classes": "^2.0.0"
+    "html-classes": "^2.0.1"
   }
 }
