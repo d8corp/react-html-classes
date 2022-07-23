@@ -1,83 +1,56 @@
-import classes from 'html-classes'
+import classes, { ClassesArgument } from 'html-classes'
 
-type Rec <K extends keyof any, T> = { [P in K]?: T }
+export type Keys = string | 'root'
+export type IsSingleKeys<K extends Keys = Keys> = Exclude<K, 'root'> extends never ? true : false
+export type SingleStyles = { root: string }
+export type MultipleStyles<K extends Keys = Keys> = Record<K, string>
+export type Styles<K extends Keys = Keys> = MultipleStyles<K> | SingleStyles
+export type MultipleRawStyles<K extends Keys = Keys> = {[T in K]?: ClassesArgument<K>}
+export type SingleRawStyles = { root?: ClassesArgument }
+export type RawStyles<K extends Keys = Keys> = IsSingleKeys<K> extends true ? SingleRawStyles : MultipleRawStyles<K>
+export type SingleGenerator = (className: ClassesArgument) => Styles<'root'>
+export type MultipleGenerator<K extends Keys = Keys> = (className: ClassesArgument, classNames: RawStyles<K>) => MultipleStyles<K>
+export type StyleGenerator<K extends Keys = Keys> = IsSingleKeys<K> extends true
+  ? SingleGenerator
+  : MultipleGenerator<K>
 
-interface Style {
-  [key: string]: any
-}
-interface StyleDescriptor {
-  get (): string
-}
-interface StyleDescriptors {
-  [key: string]: StyleDescriptor
-}
-interface StyleProps <S extends Record<string, any> = Record<string, any>> {
-  className?: any
-  classNames?: Rec<keyof S, any>
-}
-interface StyleComponent <S extends Record<string, any> = Record<string, any>> {
-  props: StyleProps<S>
+export type GetClassNames<G extends StyleGenerator = StyleGenerator> = Parameters<G>[1]
+
+export type StyleProps <
+  G extends StyleGenerator = StyleGenerator<'root'>,
+  S extends GetClassNames = GetClassNames<G>,
+  // @ts-ignore
+> = IsSingleKeys<keyof S> extends true ? {
+  className?: ClassesArgument
+} : {
+  className?: ClassesArgument
+  classNames?: S
 }
 
-const STYLES = Symbol('styles')
-
-let styleComponent: StyleComponent
-
-function style (styles: Style) {
-  const newStyles: StyleDescriptors = {}
-  const oldStyles: Record<string, string> = {}
+export const isSingleStyles = <K extends Keys>(styles: RawStyles<K>): styles is SingleStyles => {
   for (const key in styles) {
-    const className = classes(styles[key])
-    oldStyles[key] = className
-    newStyles[key] = {
-      get (): string {
-        if (styleComponent) {
-          const {props} = styleComponent
-          return classes(styleComponent[STYLES][key], key === 'root' && props.className, props.classNames?.[key])
-        }
-        return className
-      }
+    if (key !== 'root') {
+      return false
     }
   }
-  Object.defineProperties(styles, newStyles)
 
-  return target => {
-    const {prototype} = target
-    const render = prototype?.render
-    if (render) {
-      if (STYLES in prototype) {
-        prototype[STYLES] = {__proto__: prototype[STYLES]}
-        for (const key in oldStyles) {
-          prototype[STYLES][key] = classes(prototype[STYLES][key], oldStyles[key])
-        }
-      } else {
-        prototype[STYLES] = oldStyles
-        Object.defineProperty(prototype, 'render', {
-          value () {
-            const prevProps = styleComponent
-            styleComponent = this
-            const result = render.apply(this, arguments)
-            styleComponent = prevProps
-            return result
-          }
-        })
-      }
-    } else {
-      return function () {
-        const prevProps = styleComponent
-        styleComponent = {props: arguments[0], [STYLES]: oldStyles} as StyleComponent
-        const result = target.apply(this, arguments)
-        styleComponent = prevProps
-        return result
-      }
-    }
-    return target
-  }
+  return true
 }
 
-export default style
+export const getStyleGenerator = <K extends Keys>(styles: RawStyles<K>): StyleGenerator<K> => {
+  if (isSingleStyles(styles)) {
+    return (className => ({
+      root: classes([styles.root, className])
+    })) as StyleGenerator<K>
+  }
 
-export {
-  classes,
-  StyleProps
+  return ((className, classNames) => {
+    const result: MultipleStyles = {}
+
+    for (const key in styles) {
+      result[key] = classes([styles[key], key === 'root' && className, classNames && classNames[key]])
+    }
+
+    return result
+  }) as StyleGenerator<K>
 }

@@ -1,6 +1,6 @@
 {
   "name": "react-html-classes",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "HTML classes for React",
   "main": "index.js",
   "module": "index.es6.js",
@@ -32,23 +32,20 @@
   },
   "homepage": "https://github.com/d8corp/react-html-classes",
   "devDependencies": {
-    "@testing-library/react": "^10.0.2",
-    "@types/react": "^16",
-    "@types/jest": "^24.9.0",
-    "jest": "^25.1.0",
-    "mobx": "^5.15.4",
-    "mobx-react": "^6.2.2",
-    "react": "*",
-    "react-dom": "^16.12.0",
-    "rimraf": "^3.0.0",
-    "rollup": "^1.29.0",
-    "rollup-plugin-typescript2": "^0.25.3",
-    "ts-jest": "^25.2.0",
-    "typescript": "^3.7.5",
-    "minimist": ">=0.2.1",
-    "lodash": ">=4.17.19"
+    "@testing-library/react": "^13.3.0",
+    "@types/jest": "^28.1.6",
+    "@types/react": "^18.0.15",
+    "jest": "^28.1.3",
+    "jest-environment-jsdom": "^28.1.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.77.0",
+    "rollup-plugin-typescript2": "^0.32.1",
+    "ts-jest": "^28.0.7",
+    "typescript": "^4.7.4"
   },
   "dependencies": {
-    "html-classes": "^1.0.0"
+    "html-classes": "^2.0.0"
   }
 }

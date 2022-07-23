@@ -2,123 +2,126 @@
 [![NPM](https://img.shields.io/npm/v/react-html-classes.svg)](https://www.npmjs.com/package/react-html-classes)
 [![downloads](https://img.shields.io/npm/dm/react-html-classes.svg)](https://www.npmjs.com/package/react-html-classes)
 [![license](https://img.shields.io/npm/l/html-classes)](https://github.com/d8corp/react-html-classes/blob/master/LICENSE)  
-Combine html classes for React.
-## Installation
+Combine html classes for React with pleasure.
+## Install
 ```bash
 npm i react-html-classes
 # or
 yarn add react-html-classes
 ```
-## Using
-You may use `react-html-classes` as a decorator of react component.
-```typescript jsx
-import React, {Component} from 'react'
-import style, {StyleProps} from 'react-html-classes'
+## Usage
+It was born to simplify the work with SCSS modules.
+Use [CRA](https://create-react-app.dev) to start a project.
 
-// default class names
-const styles = {
-  root: 'root'
+Create a SCSS module file  
+`App.module.scss`
+```scss
+.root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
-@style(styles)
-class Root extends Component <StyleProps<typeof styles>> {
-  render () {
-    return styles.root
-  }
+.header {
+  height: 100px;
+  background: #aaa;
 }
 
-export default Root
+.footer {
+  background: #333;
+  color: #aaa;
+}
+
+.content {
+  flex: 1;
+}
 ```
-Also, you can use it without decorators
+
+Import the file into  
+`App.jsx`
 ```typescript jsx
-import React, {Component} from 'react'
-import style, {StyleProps} from 'react-html-classes'
+import { FC } from 'react'
+import { getStyleGenerator, StyleProps } from 'react-html-classes'
 
-// default class names
-const styles = {
-  root: 'root'
+// import our styles
+import styles from './App.module.scss'
+
+// create style generator
+export const getStyles = getStyleGenerator(styles)
+
+export interface AppProps extends StyleProps<typeof getStyles> {
+  // add your props here
 }
 
-class Root extends Component <StyleProps<typeof styles>> {
-  render () {
-    return styles.root
-  }
+export const App: FC<AppProps> = ({
+  className,
+  classNames,
+}) => {
+  // generate html classes list
+  const styles = getStyles(className, classNames)
+  
+  return (
+    <div className={styles.root}>
+      <header className={styles.header}>
+        This is a header
+      </header>
+      <main className={styles.content}>
+        Hello World!
+      </main>
+      <footer className={styles.footer}>
+        FOOTER
+      </footer>
+    </div>
+  )
 }
-
-export default style(styles)(Root)
 ```
-You can override a function component
-```typescript jsx
-import React, {FunctionComponent} from 'react'
-import style, {StyleProps} from 'react-html-classes'
 
-// default class names
-const styles = {
-  root: 'root'
-}
-
-const Root: FunctionComponent<StyleProps<typeof styles>> = () => {
-  return styles.root
-}
-
-export default style(styles)(Root)
-```
 ## Features
-You can override default class names by component props `className` and `classNames`.
+You can provide any styles to the `App` component through props
+
+`index.ts`
 ```typescript jsx
-const Test = () => <Root className='test' />
-// returns `root test`
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
 
-const Test = () => <Root classNames={{root: 'test'}} />
-// the same `root test`
+import { App } from './App'
+
+const container = document.getElementById('root') as HTMLDivElement
+const root = createRoot(container)
+
+root.render(
+  <StrictMode>
+    <App
+      className='test'
+      classNames={{
+        root: 'test1',
+        header: 'test2',
+        content: 'test3',
+        footer: 'test4',
+      }}
+    />
+  </StrictMode>
+)
 ```
-All features from [html-classes](https://www.npmjs.com/package/html-classes) are available to use.
+
+You can use any feature available with [html-classes](https://www.npmjs.com/package/html-classes)
+on `className` and `classNames`
 ```typescript jsx
-import React, {Component} from 'react'
-import style, {StyleProps} from 'react-html-classes'
-
-// default class names
-const styles = {
-  root: () => 'root', // returns 'root'
-  test: ['test1', 'test2'] // returns 'test1 test2'
-}
-
-@style(styles)
-class Root extends Component <StyleProps<typeof styles>> {
-  render () {
-    return <>{styles.root} | {styles.test}</>
-  }
-}
-
-export default Root
+root.render(
+  <StrictMode>
+    <App
+      className={() => 'test'}
+      classNames={{
+        root: { test1_1: true, test1_2: () => false },
+        header: ['test2_1', ['test2_2', 'test2_3']],
+        content: () => () => ['test3_1', () => 'test3_2'],
+        footer: new Set(['test4']),
+      }}
+    />
+  </StrictMode>
+)
 ```
-With props
-```typescript jsx
-const Test = () => <Root className={{test: true}} />
-// returns `root test | test1 test2`
 
-const Test = () => <Root className='test' classNames={{
-  root: 'root-test',
-  test: ['test3']
-}} />
-// returns `root test root-test | test1 test2 test3`
-```
-## Create React App
-You can use it with sass modules in CRA.
-```typescript jsx
-import React, {Component} from 'react'
-import style, {StyleProps} from 'react-html-classes'
-import styles from './Root.module.scss'
-
-@style(styles)
-class Root extends Component <StyleProps> {
-  render () {
-    return styles.root
-  }
-}
-
-export default Root
-```
 ## Issues
 If you find a bug, please file an issue on [GitHub](https://github.com/d8corp/react-html-classes/issues)  
 [![issues](https://img.shields.io/github/issues-raw/d8corp/react-html-classes)](https://github.com/d8corp/react-html-classes/issues)  
